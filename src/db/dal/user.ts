@@ -44,15 +44,31 @@ export const deleteById = async (id: number): Promise<boolean> => {
 
 export const getAll = async (
   filters?: GetAllUsersFilters
-): Promise<UserOutput[]> => {
+): Promise<{ users: UserOutput[]; total: number }> => {
+  const { limit = 10, page = 0 } = filters || {};
+  const offset = (page - 1) * limit;
+
   const whereClause: { [key: string]: any } = {};
 
   if (filters?.isDeleted) {
     whereClause.deletedAt = { [Op.not]: null };
   }
-  const users = await User.findAll({
+  if (filters?.name) {
+    whereClause.name = { [Op.like]: `%${filters.name}%` };
+  }
+
+  if (filters?.phone_number) {
+    whereClause.phone_number = filters.phone_number;
+  }
+  const { rows: users, count: total } = await User.findAndCountAll({
     where: whereClause,
+    limit,
+    offset,
     paranoid: !filters?.includeDeleted,
   });
-  return users.map((user) => user.toJSON() as UserOutput);
+
+  return {
+    users: users.map((user) => user.toJSON() as UserOutput),
+    total,
+  };
 };

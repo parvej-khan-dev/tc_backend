@@ -22,11 +22,14 @@ export const update = (
 export const getById = (id: number): Promise<UserOutput> => {
   return UserDal.getById(id);
 };
+
 export const deleteById = (id: number): Promise<boolean> => {
   return UserDal.deleteById(id);
 };
 
-export const getAll = (filters: GetAllUsersFilters): Promise<UserOutput[]> => {
+export const getAll = (
+  filters: GetAllUsersFilters
+): Promise<{ users: UserOutput[]; total: number }> => {
   return UserDal.getAll(filters);
 };
 
@@ -37,13 +40,10 @@ export const getUserAndValidatePassword = async (payload: {
   const user = await User.findOne({
     where: { phone_number: payload.phone_number },
   });
-
   if (!user) {
     throw new Error('User not found');
   }
-
   const userData = user.get({ plain: true }) as UserAttributes;
-
   const isValidPassword = await comparePassword(
     payload.password,
     userData.password as string
@@ -54,4 +54,24 @@ export const getUserAndValidatePassword = async (payload: {
   }
 
   return userData;
+};
+
+export const getUserByPhoneNumber = async (
+  phone_number: string
+): Promise<UserAttributes> => {
+  const user = await User.findOne({
+    where: { phone_number },
+  });
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return user as UserAttributes;
+};
+
+export const markAsSpam = async (id: number): Promise<UserOutput> => {
+  const user = await UserDal.getById(id);
+  if (!user) {
+    throw new Error('User not found');
+  }
+  return UserDal.update(id, { isSpam: !user.isSpam });
 };

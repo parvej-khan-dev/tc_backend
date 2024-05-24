@@ -1,8 +1,9 @@
 import { Router } from 'express';
-import { login, signUp } from '../controllers/user';
+import { updateProfile } from '../controllers/user';
+import * as userController from '../controllers/user';
 const router = Router();
 
-router.post('/register', signUp);
-router.post('/login', login);
+router.put('/update-profile', userController.updateProfile);
+router.put('/mark-as-spam/:id', userController.markAsSpam);
 
 export default router;
