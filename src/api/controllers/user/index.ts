@@ -43,7 +43,9 @@ export const updateProfile = async (req: Request, res: Response) => {
 export const markAsSpam = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    console.log('id', id);
+    if (!id) {
+      throw new Error('id is required to mark user as spam');
+    }
     const user = await service.markAsSpam(Number(id));
     return handleSuccess(res, {
       data: {

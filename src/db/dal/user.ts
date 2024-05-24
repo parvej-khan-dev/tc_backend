@@ -1,6 +1,6 @@
-import { Op } from 'sequelize';
+import { Op, where } from 'sequelize';
 import User, { UserInput, UserOutput } from '../models/User';
-import { GetAllUsersFilters } from './types';
+import { GetAllUsersFilters, paginationResult } from './types';
 import { UserInterface } from '../../api/interfaces';
 
 export const create = async (payload: UserInput): Promise<UserOutput> => {
@@ -44,9 +44,11 @@ export const deleteById = async (id: number): Promise<boolean> => {
 
 export const getAll = async (
   filters?: GetAllUsersFilters
-): Promise<{ users: UserOutput[]; total: number }> => {
-  const { limit = 10, page = 0 } = filters || {};
-  const offset = (page - 1) * limit;
+): Promise<paginationResult> => {
+  let page = filters?.page ? Number(filters?.page) : 1;
+  let limit = filters?.limit ? Number(filters?.limit) : 10;
+  let offset = limit * (page - 1);
+  let totalRecords = 0;
 
   const whereClause: { [key: string]: any } = {};
 
@@ -60,8 +62,10 @@ export const getAll = async (
   if (filters?.phone_number) {
     whereClause.phone_number = filters.phone_number;
   }
+
   const { rows: users, count: total } = await User.findAndCountAll({
     where: whereClause,
+    attributes: { exclude: ['password'] },
     limit,
     offset,
     paranoid: !filters?.includeDeleted,
@@ -70,5 +74,8 @@ export const getAll = async (
   return {
     users: users.map((user) => user.toJSON() as UserOutput),
     total,
+    limit,
+    page,
+    totalPage: Math.ceil(total / Number(limit)),
   };
 };

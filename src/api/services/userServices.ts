@@ -1,5 +1,5 @@
 import * as UserDal from '../../db/dal/user';
-import { GetAllUsersFilters } from '../../db/dal/types';
+import { GetAllUsersFilters, paginationResult } from '../../db/dal/types';
 import User, {
   UserAttributes,
   UserInput,
@@ -29,7 +29,7 @@ export const deleteById = (id: number): Promise<boolean> => {
 
 export const getAll = (
   filters: GetAllUsersFilters
-): Promise<{ users: UserOutput[]; total: number }> => {
+): Promise<paginationResult> => {
   return UserDal.getAll(filters);
 };
 

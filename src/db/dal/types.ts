@@ -15,3 +15,11 @@ declare module 'express-serve-static-core' {
     user?: UserOutput;
   }
 }
+
+export interface paginationResult {
+  total: number;
+  page: number;
+  limit: number;
+  totalPage: number;
+  users: UserOutput[];
+}
