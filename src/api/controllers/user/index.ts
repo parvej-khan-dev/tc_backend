@@ -65,6 +65,7 @@ export const search = async (req: Request, res: Response) => {
       data: usersInfo,
     });
   } catch (error) {
+    console.log('🚀 ~ search ~ error:', error);
     return handleError(res, error);
   }
 };

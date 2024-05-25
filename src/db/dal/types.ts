@@ -1,3 +1,4 @@
+import { GlobalContactOutput } from '../models/GlobalContact';
 import { UserOutput } from '../models/User';
 
 export interface GetAllUsersFilters {
@@ -21,5 +22,5 @@ export interface paginationResult {
   page: number;
   limit: number;
   totalPage: number;
-  users: UserOutput[];
+  users: UserOutput[] | GlobalContactOutput[];
 }

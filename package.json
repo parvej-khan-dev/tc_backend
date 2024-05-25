@@ -7,7 +7,7 @@
     "start": "npx ts-node src/index.ts",
     "dev": "tsx watch src/index.ts",
     "migration": "npx sequelize-cli db:migrate",
-    "faker": "tsx watch src/scripts/random.ts"
+    "faker": "tsx src/scripts/global-contact.ts"
   },
   "keywords": [],
   "author": "",

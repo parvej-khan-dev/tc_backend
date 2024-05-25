@@ -2,6 +2,8 @@ import { Op, where } from 'sequelize';
 import User, { UserInput, UserOutput } from '../models/User';
 import { GetAllUsersFilters, paginationResult } from './types';
 import { UserInterface } from '../../api/interfaces';
+import * as GlobalDal from './global_contact';
+import { GlobalContactOutput } from '../models/GlobalContact';
 
 export const create = async (payload: UserInput): Promise<UserOutput> => {
   const isUserExist = await User.findOne({
@@ -70,6 +72,21 @@ export const getAll = async (
     offset,
     paranoid: !filters?.includeDeleted,
   });
+
+  if (filters?.phone_number && users.length === 0) {
+    const globalContact = await GlobalDal.search({
+      phone_number: filters.phone_number,
+    });
+    if (globalContact.total > 0) {
+      return {
+        users: globalContact.globalContacts,
+        total: globalContact.total,
+        limit,
+        page,
+        totalPage: Math.ceil(globalContact.total / limit),
+      };
+    }
+  }
 
   return {
     users: users.map((user) => user.toJSON() as UserOutput),
