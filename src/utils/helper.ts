@@ -24,3 +24,9 @@ export const hashPassword = (password: string) => {
 export const comparePassword = async (password: string, hash: string) => {
   return await bcrypt.compare(password, hash);
 };
+
+export const removeSpecialChars = (str: string): string => {
+  const specialCharsRegex = /[^a-zA-Z0-9]/g;
+  const phone_number = str.replace(specialCharsRegex, '').replace(/x/gi, '');
+  return phone_number;
+};

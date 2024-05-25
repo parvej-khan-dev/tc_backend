@@ -44,7 +44,7 @@ Replace the values with your own configuration. Make sure to use a strong secret
 
 You can import the Postman collection for testing the API endpoints: [Postman Collection Link](https://grey-escape-207290.postman.co/workspace/PohutechLabs~04a79a6e-f8a0-43cf-8030-b20bceace0da/collection/24517097-8f40429e-0b69-40f8-877c-4fb9a942d002?action=share&creator=24517097)
 
-The base URL for the API is `http://localhost:9000/api/v1`.
+The base URL for the API is `https://usercallerbackend-production.up.railway.app/api/v1`.
 
 ## Features
 

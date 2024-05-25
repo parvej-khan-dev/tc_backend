@@ -64,6 +64,7 @@ export const getAll = async (
   let limit = filters?.limit ? Number(filters?.limit) : 10;
   let offset = limit * (page - 1);
   let totalRecords = 0;
+  let totalPage: 0;
 
   const whereClause: { [key: string]: any } = {};
 
@@ -78,7 +79,7 @@ export const getAll = async (
     whereClause.phone_number = filters.phone_number;
   }
 
-  const { rows: users, count: total } = await User.findAndCountAll({
+  let { rows: users, count: total } = await User.findAndCountAll({
     where: whereClause,
     attributes: { exclude: ['password'] },
     limit,
@@ -86,9 +87,21 @@ export const getAll = async (
     paranoid: !filters?.includeDeleted,
   });
 
+  if (filters?.name) {
+    const globalContact = await GlobalDal.search({
+      name: filters.name,
+      page,
+      limit,
+    });
+    users = [...users, ...globalContact.globalContacts] as User[];
+    total = total + globalContact.total;
+  }
+
   if (filters?.phone_number && users.length === 0) {
     const globalContact = await GlobalDal.search({
       phone_number: filters.phone_number,
+      page,
+      limit,
     });
     if (globalContact.total > 0) {
       return {
@@ -106,6 +119,6 @@ export const getAll = async (
     total,
     limit,
     page,
-    totalPage: Math.ceil(total / Number(limit)),
+    totalPage: Math.ceil(total / limit),
   };
 };

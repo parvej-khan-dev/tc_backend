@@ -1,11 +1,12 @@
 import { fakerEN } from '@faker-js/faker';
 import * as userService from '../api/services/userServices';
+import { removeSpecialChars } from '../utils/helper';
 
 export function createRandomUser() {
   return {
     email: fakerEN.internet.email(),
-    password: fakerEN.internet.password(),
-    phone_number: String(fakerEN.phone.number()),
+    password: 'Test@123',
+    phone_number: removeSpecialChars(fakerEN.phone.number().toString()),
     name: fakerEN.person.fullName(),
   };
 }
