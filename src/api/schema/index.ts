@@ -18,8 +18,7 @@ export const loginSchema = Joi.object().keys({
 export const updateProfileSchema = Joi.object().keys({
   name: Joi.string().optional(),
   email: Joi.string().email().optional().allow(null),
-  phone_number: Joi.string().length(10).pattern(/^\d+$/).optional().messages({
-    'string.length': 'Phone number must be exactly 10 digits.',
+  phone_number: Joi.string().pattern(/^\d+$/).optional().messages({
     'string.pattern.base': 'Phone number must contain only digits.',
   }),
 });

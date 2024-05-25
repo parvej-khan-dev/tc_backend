@@ -36,6 +36,7 @@ export const updateProfile = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
+    console.log('🚀 ~ updateProfile ~ error:', error);
     return handleError(res, error);
   }
 };
@@ -65,7 +66,20 @@ export const search = async (req: Request, res: Response) => {
       data: usersInfo,
     });
   } catch (error) {
-    console.log('🚀 ~ search ~ error:', error);
+    return handleError(res, error);
+  }
+};
+
+export const getUserInfo = async (req: Request, res: Response) => {
+  try {
+    const id: number = Number(req.params.id);
+    const user = await service.getById(id);
+    return handleSuccess(res, {
+      data: {
+        user: mapper.toUser(user),
+      },
+    });
+  } catch (error) {
     return handleError(res, error);
   }
 };

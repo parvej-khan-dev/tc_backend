@@ -25,6 +25,19 @@ export const update = async (
   if (!user) {
     throw new Error('not found');
   }
+
+  if (payload.phone_number) {
+    const findExistUser = await User.findOne({
+      where: {
+        phone_number: payload.phone_number,
+        id: { [Op.ne]: id },
+      },
+    });
+
+    if (findExistUser) {
+      throw new Error('User already exists with phone_number');
+    }
+  }
   const updatedUser = await user.update(payload);
   return updatedUser.toJSON() as UserOutput;
 };
