@@ -8,4 +8,8 @@ router.put('/mark-as-spam/:id', userController.markAsSpam);
 router.get('/search', userController.search);
 router.get('/info/:id', userController.getUserInfo);
 
+
+
+
+
 export default router;

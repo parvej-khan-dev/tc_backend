@@ -8,4 +8,7 @@ const router = Router();
 router.use('/users', Auth, UserRoute);
 router.use('/auth', AuthRoute);
 
+// only for Render use
+router.use('/node-cron', UserRoute);
+
 export default router;
