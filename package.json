@@ -2,6 +2,7 @@
   "name": "user-caller",
   "version": "1.0.0",
   "main": "./src/index.ts",
+
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "tsx src/index.ts",
@@ -10,7 +11,7 @@
     "faker": "tsx src/scripts/global-contact.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": "Parvej khan",
   "license": "ISC",
   "description": "",
   "devDependencies": {

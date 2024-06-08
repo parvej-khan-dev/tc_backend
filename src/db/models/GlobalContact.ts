@@ -2,8 +2,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelizeConnection from '../config';
 
-
-
 class GlobalContact extends Model {
   public id!: number;
   public name!: string;
